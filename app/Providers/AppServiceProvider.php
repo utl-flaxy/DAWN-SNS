@@ -21,8 +21,12 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
-    {
-        //
-    }
+public function boot(): void
+{
+    // 🔽 デバッグ用にルート登録をここでも実行
+    $this->app->booted(function () {
+        require base_path('routes/web.php');
+    });
+}
+
 }

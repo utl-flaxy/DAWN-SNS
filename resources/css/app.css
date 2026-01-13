@@ -1,0 +1,648 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Alpine x-cloak 対策 */
+[x-cloak] {
+  display: none !important;
+}
+
+@layer components {
+
+  /* ====== Base ====== */
+  .dawn-body {
+    background: #eef2f5;
+    color: #222;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans JP",
+      "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  }
+
+  .dawn-container {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 16px 18px 40px;
+  }
+
+  .dawn-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 18px;
+    align-items: start;
+  }
+
+  /* ====== Header ====== */
+  .dawn-header {
+    background: #3e4865;
+    height: 56px;
+    display: flex;
+    align-items: center;
+  }
+
+  .dawn-header__inner {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .dawn-logo {
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    height: 40px;
+  }
+
+  .dawn-logo__img {
+    height: 28px;
+    width: auto;
+    display: block;
+  }
+
+  /* 旧：文字ロゴも残しておく（使ってもOK） */
+  .dawn-logo__mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 28px;
+    padding: 0 10px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    font-size: 14px;
+  }
+
+  .dawn-user {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    color: #fff;
+  }
+
+  .dawn-user__name {
+    font-size: 14px;
+    opacity: 0.95;
+  }
+
+  .dawn-user__toggle {
+    background: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 4px 6px;
+    border-radius: 4px;
+    line-height: 1;
+  }
+
+  .dawn-user__toggle:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .dawn-user__icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 9999px;
+    object-fit: cover;
+    background: #fff;
+  }
+
+  .dawn-dropdown {
+    position: absolute;
+    top: 44px;
+    right: 0;
+    width: 220px;
+    background: #fff;
+    border: 1px solid #d7dbe2;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+    z-index: 50;
+  }
+
+  .dawn-dropdown.is-hidden {
+    display: none;
+  }
+
+  .dawn-dropdown__item {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 14px 14px;
+    color: #222;
+    text-decoration: none;
+    border-top: 1px solid #eee;
+    background: #fff;
+    font-size: 14px;
+  }
+
+  .dawn-dropdown__item:hover {
+    background: #f3f5f8;
+  }
+
+  .dawn-dropdown__item--home {
+    background: #d05e45;
+    color: #fff;
+    border-top: none;
+  }
+
+  .dawn-dropdown__item--home:hover {
+    background: #b8513c;
+  }
+
+  /* ====== Flash / Error ====== */
+  .dawn-flash {
+    background: #e6f4ff;
+    border: 1px solid #b6dbff;
+    padding: 10px 12px;
+    margin-bottom: 14px;
+    font-size: 14px;
+  }
+
+  .dawn-error {
+    color: #b42318;
+    font-size: 13px;
+    padding: 10px 12px 12px;
+  }
+
+  /* ====== Cards ====== */
+  .dawn-card {
+    background: #fff;
+    border: 1px solid #e2e6ee;
+  }
+
+  /* ====== Sidebar ====== */
+  .dawn-sidebar {
+    position: sticky;
+    top: 16px;
+  }
+
+  .dawn-sidecard {
+    background: #fff;
+    border: 1px solid #e2e6ee;
+    padding: 14px;
+  }
+
+  .dawn-sidecard__title {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 12px;
+  }
+
+  .dawn-sidecard__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .dawn-sidecard__label {
+    font-size: 12px;
+    color: #666;
+  }
+
+  .dawn-sidecard__count {
+    min-width: 72px;
+    text-align: right;
+    font-size: 12px;
+    color: #333;
+    background: #fff;
+    border: 1px solid #e2e6ee;
+    padding: 4px 8px;
+  }
+
+  .mt12 {
+    margin-top: 12px;
+  }
+
+  .mt18 {
+    margin-top: 18px;
+  }
+
+  .dawn-sidebtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+    margin-top: 10px;
+    background: #3e4865;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 2px;
+  }
+
+  .dawn-sidebtn:hover {
+    background: #2e364c;
+  }
+
+  /* ====== Timeline / Post Form ====== */
+  .dawn-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .dawn-postform {
+    display: grid;
+    grid-template-columns: 64px 1fr 56px;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .dawn-postform__icon img {
+    width: 44px;
+    height: 44px;
+    border-radius: 9999px;
+    object-fit: cover;
+    background: #fff;
+    border: 1px solid #e2e6ee;
+  }
+
+  .dawn-textarea {
+    width: 100%;
+    min-height: 54px;
+    resize: none;
+    border: 1px solid #d9dde6;
+    padding: 10px 12px;
+    font-size: 14px;
+    outline: none;
+  }
+
+  .dawn-textarea:focus {
+    border-color: #d05e45;
+    box-shadow: 0 0 0 2px rgba(208, 94, 69, 0.2);
+  }
+
+  .dawn-sendbtn {
+    width: 44px;
+    height: 44px;
+    border: 1px solid #d9dde6;
+    background: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+  }
+
+  .dawn-sendbtn:hover {
+    background: #f3f5f8;
+  }
+
+  .dawn-sendbtn img {
+    width: 20px;
+    height: 20px;
+    display: block;
+  }
+
+  /* ====== Post Item ====== */
+  .dawn-post {
+    background: #fff;
+    border: 1px solid #e2e6ee;
+    display: grid;
+    grid-template-columns: 78px 1fr 180px;
+    gap: 10px;
+    padding: 16px;
+  }
+
+  .dawn-post__avatar img {
+    width: 44px;
+    height: 44px;
+    border-radius: 9999px;
+    object-fit: cover;
+    border: 1px solid #e2e6ee;
+    background: #fff;
+  }
+
+  .dawn-post__name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 6px;
+  }
+
+  .dawn-post__body {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #222;
+    white-space: normal;
+  }
+
+  .dawn-post__right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .dawn-post__time {
+    font-size: 12px;
+    color: #888;
+  }
+
+  .dawn-post__actions {
+    display: inline-flex;
+    gap: 8px;
+  }
+
+  .dawn-inline {
+    display: inline;
+  }
+
+  .dawn-iconbtn {
+    width: 38px;
+    height: 38px;
+    border: 1px solid #e2e6ee;
+    background: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+    padding: 0;
+    line-height: 1;
+  }
+
+  .dawn-iconbtn img {
+    width: 18px;
+    height: 18px;
+    display: block;
+  }
+
+  .dawn-iconbtn--edit:hover {
+    background: rgba(62, 72, 101, 0.08);
+    border-color: rgba(62, 72, 101, 0.35);
+  }
+
+  .dawn-iconbtn--delete:hover {
+    background: rgba(208, 94, 69, 0.12);
+    border-color: rgba(208, 94, 69, 0.45);
+  }
+
+  /* ====== Pager ====== */
+  .dawn-pager {
+    padding: 6px 2px;
+  }
+
+  /* ====== User Search ====== */
+  .dawn-search-card {
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .dawn-searchbar {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 44px;
+    gap: 10px;
+    padding: 18px;
+    border-bottom: 1px solid #e2e6ee;
+    background: #f7f9fc;
+    align-items: center;
+  }
+
+  .dawn-searchinput {
+    height: 44px;
+    border: 1px solid #d9dde6;
+    padding: 0 12px;
+    font-size: 14px;
+    outline: none;
+    background: #fff;
+  }
+
+  .dawn-searchinput:focus {
+    border-color: #3e4865;
+    box-shadow: 0 0 0 2px rgba(62, 72, 101, 0.18);
+  }
+
+  .dawn-searchbtn {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid #d9dde6;
+    background: #3e4865;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    line-height: 1;
+  }
+
+  .dawn-searchbtn:hover {
+    background: #2e364c;
+  }
+
+  .dawn-searchbtn svg,
+  .dawn-searchbtn img {
+    width: 18px;
+    height: 18px;
+    display: block;
+  }
+
+  .dawn-searchword {
+    position: absolute;
+    right: 72px;
+    top: 18px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 12px;
+    border: 1px solid #d9dde6;
+    background: #fff;
+    font-size: 13px;
+    color: #333;
+  }
+
+  .dawn-userlist {
+    background: #fff;
+  }
+
+  .dawn-userrow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 14px 18px;
+    border-top: 1px solid #eef1f6;
+  }
+
+  .dawn-userleft {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+  }
+
+  .dawn-useravatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 9999px;
+    object-fit: cover;
+    border: 1px solid #e2e6ee;
+    background: #fff;
+    flex: none;
+  }
+
+  .dawn-username {
+    font-size: 14px;
+    font-weight: 600;
+    color: #222;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .dawn-followbtn {
+    height: 36px;
+    min-width: 120px;
+    padding: 0 14px;
+    border: 1px solid rgba(62, 72, 101, 0.35);
+    background: #5a659e;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .dawn-followbtn:hover {
+    background: #4b578d;
+  }
+
+  .dawn-followbtn--danger {
+    background: #b8513c;
+    border-color: rgba(184, 81, 60, 0.4);
+  }
+
+  .dawn-followbtn--danger:hover {
+    background: #a04735;
+  }
+
+  .dawn-empty {
+    padding: 18px;
+    color: #777;
+  }
+
+  /* ====== Follow List / Followers List ====== */
+  .dawn-pagecard {
+    padding: 14px 18px;
+  }
+
+  .dawn-pagetitle {
+    font-size: 16px;
+    font-weight: 800;
+    color: #222;
+  }
+
+  /* 上のアイコン帯（完成形っぽく：横並び→折り返し） */
+  .dawn-followstrip {
+    padding: 16px 18px;
+  }
+
+  /* アイコン帯の中身を「横並び＆折り返し」にする */
+  .dawn-followstrip__grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+  }
+
+  /* 完成形の赤枠に寄せる */
+  .dawn-followstrip.is-spec {
+    border: 2px solid rgba(208, 94, 69, 0.55);
+  }
+
+  .dawn-followstrip__item {
+    width: 44px;
+    height: 44px;
+    border-radius: 9999px;
+    overflow: hidden;
+    border: 1px solid #e2e6ee;
+    background: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    flex: none;
+  }
+
+  .dawn-followstrip__item img {
+    width: 44px;
+    height: 44px;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* 上のアイコン帯と下のタイムラインの間の太い仕切り */
+  .dawn-followdivider {
+    height: 2px;
+    background: #d9dde6;
+    border: none;
+    margin: 0;
+  }
+
+  /* ====== Responsive ====== */
+  @media (max-width: 980px) {
+    .dawn-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .dawn-sidebar {
+      position: static;
+    }
+
+    .dawn-post {
+      grid-template-columns: 64px 1fr;
+    }
+
+    .dawn-post__right {
+      grid-column: 1 / -1;
+      flex-direction: row;
+      justify-content: flex-end;
+    }
+
+    .dawn-searchword {
+      display: none;
+    }
+  }
+
+  /* ====== (あなたの既存) 認証系 ====== */
+  .dawn-auth-bg {
+    background: linear-gradient(180deg, #3e4865 0%, #d05e45 100%);
+  }
+
+  .dawn-auth-card {
+    background: rgba(108, 108, 108, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+    border-radius: 8px;
+  }
+
+  .input-dawn {
+    @apply w-full rounded bg-white px-3 py-2 text-gray-900 outline-none ring-2 ring-transparent;
+    box-shadow: none;
+  }
+
+  .input-dawn:focus {
+    --tw-ring-color: #d05e45;
+  }
+
+  .btn-dawn {
+    @apply inline-flex items-center justify-center rounded px-4 py-2 text-white transition hover:opacity-90;
+    background-color: #3e4865;
+  }
+
+  .btn-dawn:hover {
+    background-color: #2e364c;
+  }
+
+  .btn-dawn-register {
+    @apply inline-flex items-center justify-center rounded px-4 py-2 text-white transition hover:opacity-90;
+    background-color: #5a659e;
+  }
+}
