@@ -13,3 +13,12 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+# === OS junk ===
+.DS_Store
+**/.DS_Store
+**/__MACOSX/
+*Zone.Identifier
+
+# === build artifacts (Vite) ===
+/public/build/
+/public/mix-manifest.json
