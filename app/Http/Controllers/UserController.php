@@ -2,119 +2,88 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
-    public function __construct()
-    {
-        // 全てログイン必須
-        $this->middleware('auth');
-    }
-
     /**
-     * ユーザー検索
-     * GET /users/search?q=...
+     * ユーザープロフィール表示
+     * route('users.show', $id)
      */
-    public function search(Request $request)
+    public function show(int $id)
     {
-        $me = $request->user();
-        $q  = trim((string) $request->query('q', ''));
-
-        // 自分がフォローしているID一覧（Bladeで高速判定する用）
-        $followingIds = $me->followings()
-            ->pluck('users.id')
-            ->values()
-            ->all();
-
-        $query = User::query()
-            ->where('id', '!=', $me->id);
-
-        if ($q !== '') {
-            $query->where('name', 'like', "%{$q}%");
-        }
-
-        $users = $query
-            ->orderBy('name')
-            ->paginate(10)
-            ->withQueryString();
-
-        return view('users.search', compact('users', 'q', 'followingIds'));
-    }
-
-    /**
-     * ユーザープロフィール（他ユーザー含む）
-     * GET /users/{id}
-     */
-    public function show(Request $request, $id)
-    {
-        $me   = $request->user();
         $user = User::findOrFail($id);
 
-        $isMe = ((int) $me->id === (int) $user->id);
-
-        // フォロー中か（自分自身なら false 固定でOK）
-        $isFollowing = false;
-        if (! $isMe) {
-            $isFollowing = $me->followings()
-                ->where('users.id', $user->id)
-                ->exists();
-        }
-
-        // カウント（プロフィール表示に使う想定）
-        $followingsCount = $user->followings()->count();
-        $followersCount  = $user->followers()->count();
-
-        // そのユーザーの投稿（仕様S10の想定：プロフィール内に投稿一覧）
-        $posts = Post::with('user')
-            ->where('user_id', $user->id)
-            ->latest()
-            ->paginate(20);
-
-        return view('users.show', compact(
-            'user',
-            'me',
-            'isMe',
-            'isFollowing',
-            'followingsCount',
-            'followersCount',
-            'posts'
-        ));
+        return view('users.show', compact('user'));
     }
 
     /**
-     * 自分のプロフィール編集
-     * GET /profile/edit
+     * プロフィール編集画面
+     * route('users.edit')
      */
-    public function edit(Request $request)
+    public function edit()
     {
-        $me = $request->user();
-        return view('users.edit', compact('me'));
+        $user = auth()->user();
+
+        // edit.blade.php は $user を参照してるので必ず渡す
+        return view('users.edit', compact('user'));
     }
 
     /**
-     * 自分のプロフィール更新
-     * POST /profile/update
+     * プロフィール更新
+     * route('users.update')
      */
     public function update(Request $request)
     {
-        $me = $request->user();
+        $user = auth()->user();
 
-        // 仕様寄せ（必要ならここは緩めてもOK）
-        $data = $request->validate([
-            // 仕様書だと「4〜12文字」になってる
-            'name' => ['required', 'string', 'min:4', 'max:12'],
+        $validated = $request->validate([
+            'name'  => ['required', 'string', 'max:50'],
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                Rule::unique('users', 'email')->ignore($user->id),
+            ],
 
-            // 仕様書だと「400文字以内」
-            'bio'  => ['nullable', 'string', 'max:400'],
+            // 入力された時だけ変更
+            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
+
+            'bio'  => ['nullable', 'string', 'max:500'],
+
+            // edit.blade.php の <input name="icon">
+            'icon' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ]);
 
-        $me->update($data);
+        // 画像アップロード（iconUrl() が icon_path を見てる想定）
+        if ($request->hasFile('icon')) {
+            // 以前のアイコンがあれば消す（任意）
+            if (!empty($user->icon_path) && Storage::disk('public')->exists($user->icon_path)) {
+                Storage::disk('public')->delete($user->icon_path);
+            }
+
+            $path = $request->file('icon')->store('icons', 'public');
+            $validated['icon_path'] = $path;
+        }
+
+        // password は空なら更新しない
+        if (!empty($validated['password'])) {
+            $validated['password'] = Hash::make($validated['password']);
+        } else {
+            unset($validated['password']);
+        }
+
+        // icon 自体はDBに入れない（icon_path に変換したので消す）
+        unset($validated['icon']);
+
+        $user->update($validated);
 
         return redirect()
-            ->route('users.edit')
-            ->with('success', '更新しました');
+            ->route('users.show', $user->id)
+            ->with('success', 'プロフィールを更新しました');
     }
 }
