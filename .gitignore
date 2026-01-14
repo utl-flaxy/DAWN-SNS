@@ -22,3 +22,7 @@ yarn-error.log
 # === build artifacts (Vite) ===
 /public/build/
 /public/mix-manifest.json
+# === Laravel runtime ===
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/framework/cache/*
